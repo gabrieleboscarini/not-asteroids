@@ -1,8 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+*    Copyright 2014 Matthew MacGregor
+*
+*    This file is part of NotAsteroids.
+*
+*    NotAsteroids is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    Foobar is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with NotAsteroids.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.sudolink.game;
 
 import com.sudolink.entities.Asteroid;
@@ -12,31 +25,31 @@ import com.sudolink.manager.AudioManager;
 import com.sudolink.manager.FontManager;
 import com.sudolink.manager.GameObjectsManager;
 import java.awt.Color;
+import java.util.Random;
 
 /**
- *
- * @author matsu
+ * Represents a 'wave' (level) of asteroids.
+ * @author Matthew MacGregor
  */
 public class GameWave {
 
     private int asteroidsInWave = 7;
-    private int waveNumber = 0;
-    private int asteroidsMax = 100;
+    private int waveNumber = 1;
+    private final int asteroidsMax = 100;
     private int asteroidsToSpawn = asteroidsInWave;
     private final GameTimer spawnTimer;
 
     public GameWave() {
-        spawnTimer = new GameTimer(90) {
+        
+        spawnTimer = new GameTimer(60) {
             @Override
             public void action() {
                 if (asteroidsToSpawn > 0) {
                     int spawn = (int) asteroidsInWave / 5;
-                    spawnAsteroid(spawn);
+                    spawnAsteroids(spawn);
                     asteroidsToSpawn -= spawn;
-                    System.out.println("Need to spawn: " + asteroidsToSpawn);
                 }
             }
-
         };
 
         launchWave();
@@ -44,21 +57,41 @@ public class GameWave {
     }
 
     public void update(int asteroidsRemaining) {
-        if (asteroidsRemaining <= 0 && asteroidsToSpawn <= 0) {
+        
+        if ( isWaveDefeated(asteroidsRemaining) ) {
+        
             launchWave();
+            
         }
 
         spawnTimer.tick();
     }
 
+    private boolean isWaveDefeated(int asteroidsRemaining) {
+        return asteroidsRemaining <= 0 && asteroidsToSpawn <= 0;
+    }
+    
     private void launchWave() {
-        System.out.println("Launching a wave.");
-        asteroidsInWave = ( getWaveNumber() > 0 ) ? getWaveNumber() * asteroidsInWave : asteroidsInWave;
-        waveNumber++;
+
+        asteroidsInWave =  waveNumber * asteroidsInWave;
         asteroidsInWave = (asteroidsInWave > asteroidsMax) ? asteroidsMax : asteroidsInWave;
         asteroidsToSpawn = asteroidsInWave;
-        TimedTextDisplay waveText;
-        waveText = new TimedTextDisplay(FontManager.getInstance().getFont("silkscreen", 24));
+        
+        // Display a text object indicating which wave is beginning
+        TimedTextDisplay waveText = createWaveText();
+        GameObjectsManager.getInstance().add(waveText);
+        AudioManager.getInstance().playClip("alien-communication");
+        
+        waveNumber++;
+        
+    }
+    
+    private TimedTextDisplay createWaveText() {
+        
+        TimedTextDisplay waveText = new TimedTextDisplay(
+                FontManager.getInstance().getFont("silkscreen", 24)
+        );
+        
         waveText.setTimer(new GameTimer(50, waveText) {
             @Override
             public void action() {
@@ -69,65 +102,49 @@ public class GameWave {
 
             }
         });
+        
         waveText.setXY(GameCanvas.SCREEN_WIDTH * 0.5f, GameCanvas.SCREEN_HEIGHT * 0.75f);
         waveText.setHorizontallyCentered(true);
         waveText.setForeground(Color.red);
         waveText.setText("Wave " + waveNumber);
-        GameObjectsManager.getInstance().add(waveText);
-        AudioManager.getInstance().playClip("alien-communication");
+        return waveText;
     }
 
-    public void spawnAsteroid(int count) {
+    private void spawnAsteroids(int count) {
         //TODO: Improve the Asteroid spawning mechanism (make it generic?)
+        
         GameObjectsManager gm = GameObjectsManager.getInstance();
-        int where = (int) Math.random() * 4;
-        int direction = (int) (Math.random() * (120 - 90) + 90);
-        int direction2 = (int) (Math.random() * (290 - 240) + 240);
-        float speed = (float) Math.random() + 1.5f;
+        
+        Random random = new Random();
+        int where       = random.nextInt(2);
+        int direction   = random.nextInt(30) + 90;
+        int direction2  = random.nextInt(30) + 240;
+        float speed     = random.nextFloat() + 1.5f;
+        float variance  = random.nextFloat() + 1.0f;
+        
+        double randomHeight =  Math.random();
+        
+        final int OFFSCREEN_LEFT = -40;
+        final int OFFSCREEN_RIGHT = GameCanvas.SCREEN_WIDTH + 20;
+        
         for (int i = 0; i < count; i++) {
 
             switch (where) {
                 case 0:
-                    gm.add(new Asteroid(-40, (int) (GameCanvas.SCREEN_HEIGHT * 0.25), direction, speed));
+                    gm.add(new Asteroid(OFFSCREEN_LEFT, (int) (GameCanvas.SCREEN_HEIGHT * randomHeight), (direction * variance), speed));
                     break;
                 case 1:
-                    gm.add(new Asteroid(-40, (int) (GameCanvas.SCREEN_HEIGHT * 0.85), (float) (direction * 1.1), speed));
-                    break;
-                case 2:
-                    gm.add(new Asteroid(GameCanvas.SCREEN_WIDTH + 20, (int) (GameCanvas.SCREEN_HEIGHT * 0.35), direction2, speed));
-                    break;
-                case 3:
-                    gm.add(new Asteroid(GameCanvas.SCREEN_WIDTH + 20, (int) (GameCanvas.SCREEN_HEIGHT * 0.75), (float) (direction * 1.1), speed));
+                    gm.add(new Asteroid(OFFSCREEN_LEFT, (int) (GameCanvas.SCREEN_HEIGHT * randomHeight), (direction2 * variance), speed));
                     break;
                 default:
-                    gm.add(new Asteroid(GameCanvas.SCREEN_WIDTH + 20, -40, direction, speed));
+                    gm.add(new Asteroid(OFFSCREEN_RIGHT, -40, direction, speed));
             }
             where++;
-            if (where > 5) {
+            randomHeight = Math.random();
+            if (where > 1) {
                 where = 0;
             }
         }
-    }
-
-    /**
-     * @return the asteroidsMax
-     */
-    public int getAsteroidsMax() {
-        return asteroidsMax;
-    }
-
-    /**
-     * @param asteroidsMax the asteroidsMax to set
-     */
-    public void setAsteroidsMax(int asteroidsMax) {
-        this.asteroidsMax = asteroidsMax;
-    }
-
-    /**
-     * @return the waveNumber
-     */
-    public int getWaveNumber() {
-        return waveNumber;
     }
 
 }

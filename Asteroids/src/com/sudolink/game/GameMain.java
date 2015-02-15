@@ -40,21 +40,19 @@ import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 
 /**
- *
- * @author matsu
+ * Entry point for the game.
+ * @author Matthew MacGregor
  */
 public class GameMain implements KeyListener {
 
-    private final Ship ship;
-    private final Map<String, GameTimer> gameTimers;
-    private static GameMain instance;
-    private final GameLoop gameloop;
-    private GameCanvas canvas;
-    private JFrame frame;
-    private final PointsDisplay points;
-    private final GameWave wave;
-    private final TextDisplay pause;
-    private final TickerTextDisplay ticker;
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        
+        GameMain.getInstance().start();
+        
+    }
 
     public GameMain() {
 
@@ -97,9 +95,8 @@ public class GameMain implements KeyListener {
         ticker.addMessage("Version " + GameVersion.getVersion());
         ticker.addMessage("For Your Vintage Gaming Pleasure");
         ticker.addMessage("Built From Scratch in Plain Ol' Java");
-        ticker.addMessage("Sudolink, LLC 2014 * www.sudolink.com");
+        ticker.addMessage("Sudolink, LLC 2015 * www.matthewmacgregor.net");
         ticker.addMessage("How Do You Like Them Asteroids?");
-        
         
         gameObjects.add(points);
         gameObjects.add(title);
@@ -107,7 +104,7 @@ public class GameMain implements KeyListener {
         gameObjects.add(ticker);
 
         initializeTimers();
-        wave = new GameWave();
+        gameWave = new GameWave();
 
     }
 
@@ -148,6 +145,7 @@ public class GameMain implements KeyListener {
             }
         });
         frame.pack();
+        
 
     }
 
@@ -171,12 +169,14 @@ public class GameMain implements KeyListener {
     }
 
     private void initializeAudio() {
+        
         AudioManager am = AudioManager.getInstance();
         am.prepareAudioClip("explosion", "/media/explosion.wav");
         am.prepareAudioClip("shipExplosion", "/media/shipExplosion.wav");
         am.prepareAudioClip("alien-communication", "/media/alien-communication.wav");
         am.prepareAudioClip("asteroids", "/media/asteroids.aiff");
         am.prepareAudioClip("shoot", "/media/shoot.wav");
+        
     }
 
     public static GameMain getInstance() {
@@ -189,23 +189,20 @@ public class GameMain implements KeyListener {
         return instance;
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        GameMain.getInstance().start();
-//        AudioManager.getInstance().playClip("alien-communication");
-        AudioManager.getInstance().loopClip("asteroids", Clip.LOOP_CONTINUOUSLY);
-    }
+
 
     public void start() {
+        
         frame.setVisible(true);
         gameloop.start();
+        AudioManager.getInstance().loopClip("asteroids", Clip.LOOP_CONTINUOUSLY);
+        
     }
 
     public void respawn() {
-        System.out.println("Respawn");
+
         gameTimers.get("respawnTimer").start();
+        
     }
 
     public void updateTimers() {
@@ -218,8 +215,9 @@ public class GameMain implements KeyListener {
 
         GameObjectsManager gom = GameObjectsManager.getInstance();
         gom.update();
-        wave.update(gom.getAsteroidCount());
+        gameWave.update(gom.getAsteroidCount());
         updateTimers();
+        
     }
 
     public boolean isDebug() {
@@ -306,4 +304,19 @@ public class GameMain implements KeyListener {
         this.points.addPoints(points);
     }
 
+        // <editor-fold defaultstate="collapsed" desc="Private Members">
+    private final Ship ship;
+    private final Map<String, GameTimer> gameTimers;
+    private static GameMain instance;
+    private final GameLoop gameloop;
+    private GameCanvas canvas;
+    private JFrame frame;
+    private final PointsDisplay points;
+    private final GameWave gameWave;
+    private final TextDisplay pause;
+    private final TickerTextDisplay ticker;
+    // </editor-fold>
+
+    
+    
 }

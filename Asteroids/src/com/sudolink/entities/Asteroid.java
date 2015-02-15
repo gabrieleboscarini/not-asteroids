@@ -66,7 +66,7 @@ public class Asteroid extends GameObject {
         
         particleLifespanMax = (int)(Math.random() * 60);
         initPolygon();
-       
+        System.out.println("Creating an Asteroid.");
     }
     
     public Asteroid(float x, float y, float angle, float speed ) {
@@ -141,6 +141,7 @@ public class Asteroid extends GameObject {
         //Kill the asteroid if it's been offscreen for more than 300 ticks
         if( isOffScreen() ) {
             if( offscreenCount > 300 ) {
+                System.out.println("Killing an asteroid.");
                 setState(Killed);
             }
             offscreenCount++;
@@ -188,7 +189,7 @@ public class Asteroid extends GameObject {
         }
     }
 
-    private final int generateSize() {
+    private int generateSize() {
         return (int)(Math.random() * 4) + 1;
     }
 

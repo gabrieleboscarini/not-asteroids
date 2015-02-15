@@ -24,7 +24,7 @@ import static com.sudolink.enumeration.EntityState.Passive;
 
 /**
  *
- * @author matsu
+ * @author Matthew MacGregor
  */
 public abstract class GameTimer {
     
