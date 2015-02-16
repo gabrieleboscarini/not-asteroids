@@ -47,6 +47,13 @@ public class FontManager {
         return instance;
     }
 
+    /**
+     * This method inserts and loads a font, using the given fontname and filename
+     * for the font file. Always prepare fonts before use.
+     * 
+     * @param fontname The unique key for the font.
+     * @param filename The filename used to load the font.
+     */
     public void prepareFont(String fontname, String filename) {
         Font font;
         try {
@@ -61,6 +68,15 @@ public class FontManager {
 
     }
 
+    /**
+     * Returns a font for the given name (key) with the provided font size. If 
+     * the particular font size has not yet been prepared, it will be prepared 
+     * now and stored for later.
+     * 
+     * @param fontname The unique key for the font, provided at prepareFont().
+     * @param size The size of the font.
+     * @return 
+     */
     public Font getFont(String fontname, float size) {
         String font_plus_size = fontname + (int) size;
         if (!fonts.containsKey(font_plus_size)) {

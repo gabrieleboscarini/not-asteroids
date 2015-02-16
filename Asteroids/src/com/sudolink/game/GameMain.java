@@ -122,7 +122,6 @@ public class GameMain implements KeyListener {
             @Override
             public void componentResized(ComponentEvent e) {
                 Rectangle r = frame.getBounds();
-                System.out.println(r);
                 canvas.refreshBuffer(r.width, r.height);
                 if (points != null) {
                     points.setXY(GameCanvas.SCREEN_WIDTH * 0.7f, 0);

@@ -32,7 +32,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author matsu
+ * @author Matthew MacGregor
  */
 public class GameCanvas extends JPanel {
 
@@ -50,6 +50,12 @@ public class GameCanvas extends JPanel {
         addKeyListener(listener);
     }
 
+    /**
+     * Allows the owner of this component to reset the size (in response to a 
+     * screen resize event, for example).
+     * @param width
+     * @param height
+     */
     public final void refreshBuffer(int width, int height) {
         GameCanvas.SCREEN_WIDTH = width;
         GameCanvas.SCREEN_HEIGHT = height;
@@ -62,28 +68,34 @@ public class GameCanvas extends JPanel {
         g2d = backbuffer.createGraphics();
     }
 
+    /**
+     * This fires the main draw loop.
+     */
     public void updateGraphics() {
+        
         g2d.setTransform(getIdentity());
         g2d.setPaint(Color.BLACK);
         g2d.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         List<GameObject> objects = GameObjectsManager.getInstance().get();
-        synchronized (objects) {
-            for (GameObject o : objects) {
-                switch (o.getState()) {
-                    case Active:
-                    case Impervious:
-                    case Ghost:
-                        g2d.setTransform(getIdentity());
-                        o.draw(g2d);
-                    case Passive:
-                    case Killed:
-                    default:
-                        ;
+        
+        // This shouldn't need synchronization (?)
+        for (GameObject o : objects) {
+            switch (o.getState()) {
+                // Only draw active objects
+                case Active:
+                case Impervious:
+                case Ghost:
+                    g2d.setTransform(getIdentity());
+                    o.draw(g2d);
 
-                }
+                // Ignore these objects
+                case Passive:
+                case Killed:
+                default:
+                    ;
+
             }
         }
-
     }
 
     @Override
