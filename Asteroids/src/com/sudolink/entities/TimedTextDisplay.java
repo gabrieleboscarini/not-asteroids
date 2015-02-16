@@ -22,8 +22,8 @@ import com.sudolink.game.GameTimer;
 import java.awt.Font;
 
 /**
- *
- * @author matsu
+ * Provides a TextDisplay with an embedded timer, allowing timed behavior.
+ * @author Matthew MacGregor
  */
 public class TimedTextDisplay extends TextDisplay {
     

@@ -19,8 +19,8 @@
 package com.sudolink.enumeration;
 
 /**
- *
- * @author matsu
+ * Represents the current status of a game object.
+ * @author Matthew MacGregor
  */
 public enum EntityState {
     

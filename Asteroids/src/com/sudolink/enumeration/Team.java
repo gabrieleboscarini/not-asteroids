@@ -19,8 +19,8 @@
 package com.sudolink.enumeration;
 
 /**
- *
- * @author matsu
+ * Represents any one of three teams: Friend, Enemy, or Neutral.
+ * @author Matthew MacGregor
  */
 public enum Team {
     Friend,

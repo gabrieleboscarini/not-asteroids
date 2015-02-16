@@ -57,8 +57,6 @@ public abstract class GameObject {
     private float width = 10;
     private Team team = Team.Neutral;
 
-    private Shape shape;
-
     public void draw(Graphics2D g2d) {
         g2d.translate(getX() + getWidth() / 2, getY() + getHeight() / 2);
         g2d.rotate(Math.toRadians(getRotation()));

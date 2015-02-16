@@ -28,13 +28,11 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author matsu
+ * @author Matthew MacGregor
  */
 public class FontManager {
 
-    private static FontManager instance;
-    private final Map<String, Font> fonts;
-
+    // Singleton pattern
     private FontManager() {
         fonts = new HashMap<>();
     }
@@ -84,5 +82,7 @@ public class FontManager {
         }
         return fonts.get(font_plus_size);
     }
-
+    
+    private static FontManager instance;
+    private final Map<String, Font> fonts;
 }

@@ -159,7 +159,7 @@ public class GameObjectsManager {
 
             }
         }
-        
+        // TODO: Implement logging class.
         System.out.println("Game objects: " + count + " removed. Remaining: " + gameObjects.size());
     }
     

@@ -25,17 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author matsu
+ * Provides a "ticker tape" style text display.
+ * @author Matthew MacGregor
  */
 public class TickerTextDisplay extends TextDisplay {
-
-    private final GameTimer keypressTimer;
-    private String currentMessage = "";
-    private final List<String> messages;
-    private int nextMessageIndex;
-    private int nextCharIndex = -1;
-    private int delayBeforeErase = 40; //ticks
 
     public TickerTextDisplay(Font f) {
         super(f);
@@ -93,5 +86,13 @@ public class TickerTextDisplay extends TextDisplay {
         this.messages.add(message);
     }
    
+    // <editor-fold defaultstate="collapsed" desc="Private Members">
+    private final GameTimer keypressTimer;
+    private String currentMessage = "";
+    private final List<String> messages;
+    private int nextMessageIndex;
+    private int nextCharIndex = -1;
+    private int delayBeforeErase = 40; //ticks
+    // </editor-fold>
     
 }
