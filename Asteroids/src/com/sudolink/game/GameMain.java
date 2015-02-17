@@ -172,7 +172,7 @@ public class GameMain implements KeyListener {
         am.prepareAudioClip("shipExplosion", "/media/shipExplosion.wav");
         am.prepareAudioClip("alien-communication", "/media/alien-communication.wav");
         am.prepareAudioClip("asteroids", "/media/asteroids.aiff");
-        am.prepareAudioClip("shoot", "/media/shoot.wav");
+        am.prepareAudioClip("shoot", "/media/laser.wav");
         
     }
 

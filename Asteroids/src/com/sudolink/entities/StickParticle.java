@@ -21,6 +21,7 @@ package com.sudolink.entities;
 import static com.sudolink.enumeration.EntityState.Killed;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 /**
  * When the ship blows up, debris is represented by "sticks" that fly in all
@@ -44,10 +45,16 @@ public class StickParticle extends GameObject {
     }
 
     @Override
-    public void draw(Graphics2D g2d) {
-        super.draw(g2d);
+    protected void drawToBuffer( Graphics2D g2d ) {
+        
         g2d.setPaint(Color.ORANGE);
         g2d.drawLine(0, 0, length, length);
+ 
+    }
+    
+    @Override
+    public void draw(Graphics2D g2d) {
+        super.draw(g2d);
     }
 
     @Override
@@ -77,4 +84,6 @@ public class StickParticle extends GameObject {
     private int lifespanMax = 50;
     private int length = 12;
     // </editor-fold>
+
+
 }

@@ -30,7 +30,6 @@ import com.sudolink.manager.GameObjectsManager;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import javax.sound.sampled.Clip;
 
 /**
  * The player's ship.
@@ -59,14 +58,15 @@ public class Ship extends GameObject {
                 imperviumTimer.reset();
                 Ship.this.shipColor = Color.ORANGE;
                 setState(Active);
+                refreshBuffer();
             }
         };
         imperviumTimer.stop();
     }
 
     @Override
-    public void draw(Graphics2D g2d) {
-        super.draw(g2d);
+    protected void drawToBuffer( Graphics2D g2d ) {
+   
         drawBoundingBox(g2d);
 
         g2d.setPaint(Color.BLACK);
@@ -74,6 +74,13 @@ public class Ship extends GameObject {
         g2d.setPaint(shipColor);
         g2d.drawPolygon(xpoly, ypoly, 3);
 
+    }
+    
+    @Override
+    public void draw(Graphics2D g2d) {
+        
+        super.draw(g2d);
+        
     }
 
     @Override
@@ -131,6 +138,7 @@ public class Ship extends GameObject {
             shipColor = Color.GRAY;
             imperviumTimer.start();
         }
+        refreshBuffer();
     }
 
     public boolean isImpervious() {
@@ -198,4 +206,6 @@ public class Ship extends GameObject {
     private Color shipColor = Color.ORANGE;
     private final GameTimer imperviumTimer;
     // </editor-fold>
+
+
 }

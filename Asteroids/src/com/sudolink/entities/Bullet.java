@@ -23,6 +23,7 @@ import static com.sudolink.enumeration.Team.Enemy;
 import static com.sudolink.enumeration.Team.Friend;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -37,13 +38,18 @@ public class Bullet extends GameObject {
         setDirection(r);
         setTeam(Friend);
     }
+   
+    @Override
+    protected void drawToBuffer( Graphics2D g2d ) {
+        g2d.setPaint(Color.RED);
+        g2d.drawRect(0, 0, 2, 2);
+    }
     
     @Override
     public void draw(Graphics2D g2d ) {
         super.draw(g2d);
         //g2d.translate(getX(),getY());
-        g2d.setPaint(Color.RED);
-        g2d.drawRect(0, 0, 2, 2);
+
         
     }
 
@@ -67,6 +73,8 @@ public class Bullet extends GameObject {
             o.damage(this, 1);
         }
     }
+
+
     
     
     

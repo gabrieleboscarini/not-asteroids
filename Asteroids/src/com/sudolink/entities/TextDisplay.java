@@ -24,7 +24,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 
 /**
  * A GameObject that renders text to the screen.
@@ -34,11 +33,13 @@ import java.awt.image.BufferedImage;
 public class TextDisplay extends GameObject {
 
     public TextDisplay(Font f, String text) {
+        super();
         message = "";
         font = f;
         foreground = Color.WHITE;
         background = Color.BLACK;
 
+        initBuffer();
         setTeam(Team.Neutral);
         setText(text);
         resize();
@@ -57,11 +58,11 @@ public class TextDisplay extends GameObject {
     public void draw(Graphics2D g2d) {
         if (isEnabled) {
             if (shouldRedraw) {
-                drawToBuffer();
+                setBuffer(null);
             }
 
             super.draw(g2d);
-            g2d.drawImage(backbuffer, 0, 0, null);
+//            g2d.drawImage(backbuffer, 0, 0, null);
         }
 
     }
@@ -115,7 +116,10 @@ public class TextDisplay extends GameObject {
     }
     
     // <editor-fold defaultstate="collapsed" desc="Private & Protected Methods">
-    protected Dimension sizeText(String str) {
+    protected Dimension sizeText(String str) { 
+        
+        Graphics2D _g2d = getGraphics();
+        
         // get metrics from the graphics
         FontMetrics metrics = _g2d.getFontMetrics(font);
 
@@ -135,28 +139,15 @@ public class TextDisplay extends GameObject {
         
         return new Dimension(adv, hgt);
     }
-    
-    private void initBuffer() {
-        if( backbuffer == null || _g2d == null ) {
-            System.out.println("Initialized buffer.");
-            refreshBuffer(1,1);
-        }
-    }
-
-    private void refreshBuffer(int width, int height) {
-        backbuffer = new BufferedImage(
-                width,
-                height,
-                BufferedImage.TYPE_INT_RGB);
-        _g2d = backbuffer.createGraphics();
-        System.out.println("Refreshing the buffer: " + message);
-    }
+        
+//    private void refreshBuffer(int width, int height) {
+//        setBuffer(null);
+//    }
 
     private void resize() {
-        if( backbuffer == null || _g2d == null ) {
-            initBuffer();
-        }
-        
+ 
+        initBuffer();
+               
         Dimension d = sizeText(message);
         
         //We only want to refresh the buffered image if it's bigger than 
@@ -165,20 +156,23 @@ public class TextDisplay extends GameObject {
       
             setWidth(d.width);
             setHeight(d.height);
-            refreshBuffer(d.width, d.height);
+            refreshBuffer();
 
         }
     }
     
     private void clearBackground() {
+        Graphics2D _g2d = getGraphics();
         _g2d.setBackground(background);
         _g2d.clearRect(0, 0, (int) getWidth(), (int) getHeight());
     }
 
     /**
-     * Draws to a buffer only when the text has changed to enhance performance.
+     * Draws to a buffer only when the
+     * @param _g2d text has changed to enhance performance.
      */
-    private void drawToBuffer() {
+    @Override
+    protected void drawToBuffer( Graphics2D _g2d ) {
 
         if (_g2d == null) {
             throw new NullPointerException("Graphics2D object cannot be null!");
@@ -194,10 +188,7 @@ public class TextDisplay extends GameObject {
         
     // <editor-fold defaultstate="collapsed" desc="Private Members">
     private String message;
-    private Dimension size;
     private boolean shouldRedraw = true; //First pass should always redraw
-    private BufferedImage backbuffer;
-    private Graphics2D _g2d;
     private final Font font;
     private Color foreground;
     private final Color background;

@@ -18,14 +18,15 @@
 */
 package com.sudolink.entities;
 
-import com.sudolink.manager.AudioManager;
-import com.sudolink.game.GameMain;
 import static com.sudolink.enumeration.EntityState.Killed;
 import static com.sudolink.enumeration.Team.Enemy;
+import com.sudolink.game.GameMain;
+import com.sudolink.manager.AudioManager;
 import com.sudolink.manager.GameObjectsManager;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 /**
@@ -48,10 +49,8 @@ public class Asteroid extends GameObject {
     private int particleLifespanMax = 25;
     private int offscreenCount;
     
-    private BufferedImage backbuffer;
     
-
-    private   Polygon poly;
+    private Polygon poly;
     
     public Asteroid(float x, float y, float angle, float speed, int sizeOverride ) {
         initSize(sizeOverride);
@@ -66,7 +65,6 @@ public class Asteroid extends GameObject {
         
         particleLifespanMax = (int)(Math.random() * 60);
         initPolygon();
-        System.out.println("Creating an Asteroid.");
     }
     
     public Asteroid(float x, float y, float angle, float speed ) {
@@ -116,12 +114,23 @@ public class Asteroid extends GameObject {
     }
     
     @Override
+    protected void drawToBuffer( Graphics2D _g2d ) {
+        
+        _g2d.setPaint(Color.BLACK);
+        _g2d.fillPolygon(poly);
+        _g2d.setPaint(Color.GREEN);
+        _g2d.drawPolygon(poly);
+ 
+    }
+    
+    @Override
     public void draw(Graphics2D g2d) {
-        super.draw(g2d);
-        g2d.setPaint(Color.BLACK);
-        g2d.fillPolygon(poly);
-        g2d.setPaint(Color.GREEN);
-        g2d.drawPolygon(poly);
+//        if( backbuffer == null ) {
+//            drawToBuffer();
+//        }
+        
+        super.draw(g2d);        
+//        g2d.drawImage(backbuffer, 0, 0, null);
     }
 
     @Override

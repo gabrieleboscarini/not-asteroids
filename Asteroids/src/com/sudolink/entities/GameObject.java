@@ -26,11 +26,12 @@ import com.sudolink.enumeration.Team;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Shape;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 
 /**
  *
- * @author matsu
+ * @author Matthew MacGregor
  */
 public abstract class GameObject {
 
@@ -56,13 +57,56 @@ public abstract class GameObject {
     private float height = 10;
     private float width = 10;
     private Team team = Team.Neutral;
-
+    
+    private BufferedImage backbuffer;
+    
+//    public GameObject() {
+////        initBuffer();
+//    }
+    
     public void draw(Graphics2D g2d) {
+        if( backbuffer == null ) {
+            initBuffer();
+            drawToBuffer(backbuffer.createGraphics());
+        }
+        
         g2d.translate(getX() + getWidth() / 2, getY() + getHeight() / 2);
         g2d.rotate(Math.toRadians(getRotation()));
         g2d.translate(-getWidth() / 2, -getHeight() / 2);
+        // Solves the problem of polygons looking crappy during rotation.
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.drawImage(backbuffer, 0, 0, null);
     }
 
+    protected final void initBuffer() {
+        BufferedImage buffer = new BufferedImage(
+                (int)getWidth() + 1,
+                (int)getHeight() + 1,
+                BufferedImage.TYPE_INT_RGB);
+        setBuffer(buffer);
+    }
+    
+    protected void refreshBuffer() {
+        setBuffer(null);
+    }
+    
+    protected abstract void drawToBuffer( Graphics2D g2d );
+    
+    protected Graphics2D getGraphics() {
+        if( backbuffer != null ) {
+            return backbuffer.createGraphics();
+        }
+        return null;
+    }
+    
+    protected BufferedImage getBuffer() {
+        return backbuffer;
+    }
+    
+    protected void setBuffer(BufferedImage buffer) {
+        backbuffer = buffer;
+    }
+    
     public void update() {
         screenWrap();
     }
@@ -116,8 +160,6 @@ public abstract class GameObject {
             setX(getX() - GameCanvas.SCREEN_WIDTH);
             setY(GameCanvas.SCREEN_HEIGHT - getY());
         } else if (getY() > GameCanvas.SCREEN_HEIGHT && (getDirection() >= 90 && getDirection() <= 270)) {
-            System.out.println(getDirection());
-            System.out.println("Alps");
             setY(getY() - GameCanvas.SCREEN_HEIGHT);
             setX(GameCanvas.SCREEN_WIDTH - getX());
         } else if (getY() < -10 && (getDirection() > 270 || getDirection() < 90)) {
@@ -373,7 +415,7 @@ public abstract class GameObject {
     /**
      * @return the height
      */
-    public float getHeight() {
+    public final float getHeight() {
         return height;
     }
 
@@ -387,7 +429,7 @@ public abstract class GameObject {
     /**
      * @return the width
      */
-    public float getWidth() {
+    public final float getWidth() {
         return width;
     }
 
