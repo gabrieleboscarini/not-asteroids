@@ -62,9 +62,7 @@ public class TextDisplay extends GameObject {
             }
 
             super.draw(g2d);
-//            g2d.drawImage(backbuffer, 0, 0, null);
         }
-
     }
 
     public final void setText(String message) {
@@ -139,10 +137,6 @@ public class TextDisplay extends GameObject {
         
         return new Dimension(adv, hgt);
     }
-        
-//    private void refreshBuffer(int width, int height) {
-//        setBuffer(null);
-//    }
 
     private void resize() {
  

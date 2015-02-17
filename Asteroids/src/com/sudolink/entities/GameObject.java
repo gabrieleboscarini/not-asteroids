@@ -60,10 +60,6 @@ public abstract class GameObject {
     
     private BufferedImage backbuffer;
     
-//    public GameObject() {
-////        initBuffer();
-//    }
-    
     public void draw(Graphics2D g2d) {
         if( backbuffer == null ) {
             initBuffer();
@@ -82,7 +78,7 @@ public abstract class GameObject {
         BufferedImage buffer = new BufferedImage(
                 (int)getWidth() + 1,
                 (int)getHeight() + 1,
-                BufferedImage.TYPE_INT_RGB);
+                BufferedImage.TYPE_INT_ARGB);
         setBuffer(buffer);
     }
     

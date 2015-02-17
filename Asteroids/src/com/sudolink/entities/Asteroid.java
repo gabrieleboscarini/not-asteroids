@@ -26,8 +26,7 @@ import com.sudolink.manager.GameObjectsManager;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
 
 /**
  *
@@ -54,6 +53,7 @@ public class Asteroid extends GameObject {
     
     public Asteroid(float x, float y, float angle, float speed, int sizeOverride ) {
         initSize(sizeOverride);
+        
         setWidth(size * 10);
         setHeight(size  * 10);
         setX(x);
@@ -92,9 +92,16 @@ public class Asteroid extends GameObject {
     }
     
     private void initPolygon() {
+        if( getSize() == Size.TINY ) {
+            poly = new Polygon();
+            poly.addPoint(0, 0);
+            poly.addPoint(1, 1);
+            return;
+        }
+        
         double r1 = Math.random();
         double r2 = Math.random();  
-        int[] xpoly = new int[] {              0,  
+        int[] xpoly = new int[] {              1,  
                                 (int) (  getWidth() * 0.3 * r1  ), 
                                 (int) (  getWidth() * 0.6  ), 
                                 (int)    getWidth()         ,
@@ -104,7 +111,7 @@ public class Asteroid extends GameObject {
         
         int[] ypoly = new int[] { 
                                 (int) ( getHeight() * 0.5 * r1 ), 
-                                (int)   0                       , 
+                                (int)   1                       , 
                                 (int) ( getHeight() * 0.1 * r2 ), 
                                 (int) ( getHeight() * 0.3  ), 
                                 (int) ( getHeight() * 0.9  ), 
@@ -115,7 +122,9 @@ public class Asteroid extends GameObject {
     
     @Override
     protected void drawToBuffer( Graphics2D _g2d ) {
-        
+        Color transparent = new Color(1f, 0f, 0f, 0.0f);
+        _g2d.setBackground(transparent);
+        _g2d.clearRect(0, 0, (int) getWidth(), (int) getHeight());
         _g2d.setPaint(Color.BLACK);
         _g2d.fillPolygon(poly);
         _g2d.setPaint(Color.GREEN);
@@ -125,12 +134,9 @@ public class Asteroid extends GameObject {
     
     @Override
     public void draw(Graphics2D g2d) {
-//        if( backbuffer == null ) {
-//            drawToBuffer();
-//        }
         
         super.draw(g2d);        
-//        g2d.drawImage(backbuffer, 0, 0, null);
+        
     }
 
     @Override
@@ -185,7 +191,7 @@ public class Asteroid extends GameObject {
         if( getSize() > Size.TINY ) {
             for( int i = 0; i < 3; i++) { 
                 int direction = 1 +  (int)(Math.random() * 360);
-                int sz = (int)(Math.random() * (getSize()));
+                int sz = (int)(Math.random() * ( getSize()));
                 Asteroid a = new Asteroid(getX(), getY(), direction, 3.3f, sz );
                 a.setTurnRate(3.0f, GameObject.TURN_RIGHT);
                 GameObjectsManager.getInstance().add(a);
