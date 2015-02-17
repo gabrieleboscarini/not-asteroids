@@ -33,17 +33,10 @@ import java.awt.Rectangle;
 import javax.sound.sampled.Clip;
 
 /**
- *
- * @author matsu
+ * The player's ship.
+ * @author Matthew MacGregor
  */
 public class Ship extends GameObject {
-
-    private final int[] xpoly;
-    private final int[] ypoly;
-
-    private final Clip explosion;
-    private Color shipColor = Color.ORANGE;
-    private final GameTimer imperviumTimer;
 
     public Ship() {
         int unit = 8;
@@ -57,7 +50,8 @@ public class Ship extends GameObject {
         setZ(1000);
 
         setTeam(Friend);
-        explosion = AudioManager.getInstance().getClip("shipExplosion");
+        
+        audioManager = AudioManager.getInstance();
         imperviumTimer = new GameTimer(150) {
             @Override
             public void action() {
@@ -123,17 +117,7 @@ public class Ship extends GameObject {
             Bullet b = new Bullet((int) r.getCenterX(), (int) r.getCenterY(), getDirection());
             GameObjectsManager.getInstance().add(b);
         }
-        AudioManager.getInstance().playClip("shoot");
-    }
-
-    private void explode() {
-        this.setState(Passive);
-        AudioManager.getInstance().playClip("shipExplosion");
-        for (int i = 0; i < 7; i++) {
-            GameObjectsManager.getInstance().add(new StickParticle(getX(), getY()));
-        }
-
-        GameMain.getInstance().respawn();
+        playShootClip();
     }
 
     public void toggleImpervious() {
@@ -185,5 +169,33 @@ public class Ship extends GameObject {
             }
         }
     }
+    
+    // <editor-fold defaultstate="collapsed" desc="Private Methods">
+    private void explode() {
+        this.setState(Passive);
+        playExplosionClip();
+        for (int i = 0; i < 7; i++) {
+            GameObjectsManager.getInstance().add(new StickParticle(getX(), getY()));
+        }
 
+        GameMain.getInstance().respawn();
+    }
+    
+    private void playShootClip() {
+        audioManager.playClip("shoot");
+    }
+    
+    private void playExplosionClip() {
+        audioManager.playClip("shipExplosion");
+    }
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Private Members">
+    private final int[] xpoly;
+    private final int[] ypoly;
+
+    private final AudioManager audioManager;
+    private Color shipColor = Color.ORANGE;
+    private final GameTimer imperviumTimer;
+    // </editor-fold>
 }

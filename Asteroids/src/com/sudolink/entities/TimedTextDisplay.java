@@ -29,8 +29,8 @@ public class TimedTextDisplay extends TextDisplay {
     
     private GameTimer timer;
     
-    public TimedTextDisplay(Font f) {
-        super(f);
+    public TimedTextDisplay(Font f, String text) {
+        super(f, text);
     }
     
     @Override

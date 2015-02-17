@@ -33,14 +33,19 @@ import java.awt.image.BufferedImage;
  */
 public class TextDisplay extends GameObject {
 
-    public TextDisplay(Font f) {
+    public TextDisplay(Font f, String text) {
         message = "";
         font = f;
         foreground = Color.WHITE;
         background = Color.BLACK;
+
         setTeam(Team.Neutral);
-        initBuffer();
+        setText(text);
         resize();
+    }
+    
+    public TextDisplay( Font f ) {
+        this( f, "" );
     }
 
     @Override
@@ -60,10 +65,8 @@ public class TextDisplay extends GameObject {
         }
 
     }
-    
 
-
-    public void setText(String message) {
+    public final void setText(String message) {
         this.message = message;
         shouldRedraw = true;
         resize();
@@ -134,7 +137,10 @@ public class TextDisplay extends GameObject {
     }
     
     private void initBuffer() {
-        refreshBuffer(1, 1);
+        if( backbuffer == null || _g2d == null ) {
+            System.out.println("Initialized buffer.");
+            refreshBuffer(1,1);
+        }
     }
 
     private void refreshBuffer(int width, int height) {
@@ -143,10 +149,14 @@ public class TextDisplay extends GameObject {
                 height,
                 BufferedImage.TYPE_INT_RGB);
         _g2d = backbuffer.createGraphics();
-        System.out.println("Refreshing the buffer.");
+        System.out.println("Refreshing the buffer: " + message);
     }
 
     private void resize() {
+        if( backbuffer == null || _g2d == null ) {
+            initBuffer();
+        }
+        
         Dimension d = sizeText(message);
         
         //We only want to refresh the buffered image if it's bigger than 
@@ -160,8 +170,6 @@ public class TextDisplay extends GameObject {
         }
     }
     
-
-
     private void clearBackground() {
         _g2d.setBackground(background);
         _g2d.clearRect(0, 0, (int) getWidth(), (int) getHeight());

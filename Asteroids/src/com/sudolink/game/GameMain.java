@@ -71,19 +71,17 @@ public class GameMain implements KeyListener {
         FontManager fm = FontManager.getInstance();
         fm.prepareFont("silkscreen", "/media/slkscr.ttf");
 
-        TextDisplay title = new TextDisplay(fm.getFont("silkscreen", 24));
+        TextDisplay title = new TextDisplay(fm.getFont("silkscreen", 24), "Not Asteroids");
         title.setXY(GameCanvas.SCREEN_WIDTH * 0.1f, 0);
         title.setForeground(Color.red);
-        title.setText("Not Asteroids");
-
-        points = new PointsDisplay(fm.getFont("silkscreen", 24));
+ 
+        points = new PointsDisplay(fm.getFont("silkscreen", 24), "");
         points.setXY(GameCanvas.SCREEN_WIDTH * 0.7f, 0);
 
-        pause = new TextDisplay(fm.getFont("silkscreen", 48));
+        pause = new TextDisplay(fm.getFont("silkscreen", 48), "Press ESC Key");
         pause.setForeground(Color.red);
         pause.setXY(GameCanvas.SCREEN_WIDTH * 0.5f, GameCanvas.SCREEN_HEIGHT * 0.5f);
         pause.setHorizontallyCentered(true);
-        pause.setText("Press ESC Key");
         pause.setEnabled(false);
         
         ticker = new TickerTextDisplay(fm.getFont("silkscreen", 18));

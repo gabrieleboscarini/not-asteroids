@@ -89,7 +89,8 @@ public class GameWave {
     private TimedTextDisplay createWaveText() {
         
         TimedTextDisplay waveText = new TimedTextDisplay(
-                FontManager.getInstance().getFont("silkscreen", 24)
+                FontManager.getInstance().getFont("silkscreen", 24),
+                "Wave " + waveNumber
         );
         
         waveText.setTimer(new GameTimer(50, waveText) {
@@ -106,7 +107,6 @@ public class GameWave {
         waveText.setXY(GameCanvas.SCREEN_WIDTH * 0.5f, GameCanvas.SCREEN_HEIGHT * 0.75f);
         waveText.setHorizontallyCentered(true);
         waveText.setForeground(Color.red);
-        waveText.setText("Wave " + waveNumber);
         return waveText;
     }
 

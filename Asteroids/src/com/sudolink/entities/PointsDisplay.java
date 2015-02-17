@@ -28,8 +28,8 @@ public class PointsDisplay extends TextDisplay {
 
     private int points;
   
-    public PointsDisplay(Font f) {
-        super(f);
+    public PointsDisplay(Font f, String text) {
+        super(f, text);
         setText("Points: " + this.points);
     }
 
