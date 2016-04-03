@@ -243,11 +243,9 @@ public class GameMain implements KeyListener {
         } else {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
-//                    ship.increaseTurnRate(0.6f, GameObject.TURN_LEFT);
                     ship.setTurnRate(3.5f, GameObject.TURN_LEFT);
                     break;
                 case KeyEvent.VK_RIGHT:
-//                    ship.increaseTurnRate(0.6f, GameObject.TURN_RIGHT);
                     ship.setTurnRate(3.5f, GameObject.TURN_RIGHT);
                     break;
                 case KeyEvent.VK_UP:

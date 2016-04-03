@@ -23,7 +23,6 @@ import static com.sudolink.enumeration.Team.Enemy;
 import static com.sudolink.enumeration.Team.Friend;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 
 /**
  *
@@ -73,9 +72,5 @@ public class Bullet extends GameObject {
             o.damage(this, 1);
         }
     }
-
-
-    
-    
     
 }
