@@ -33,7 +33,6 @@ import java.awt.Rectangle;
 
 /**
  * The player's ship.
- * @author Matthew MacGregor
  */
 public class Ship extends GameObject {
 

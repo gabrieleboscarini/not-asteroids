@@ -59,9 +59,7 @@ public class GameWave {
     public void update(int asteroidsRemaining) {
         
         if ( isWaveDefeated(asteroidsRemaining) ) {
-        
             launchWave();
-            
         }
 
         spawnTimer.tick();
@@ -105,7 +103,7 @@ public class GameWave {
         });
         
         waveText.setXY(GameCanvas.SCREEN_WIDTH * 0.5f, GameCanvas.SCREEN_HEIGHT * 0.75f);
-        waveText.setHorizontallyCentered(true);
+        waveText.setIsHorizontallyCentered(true);
         waveText.setForeground(Color.red);
         return waveText;
     }

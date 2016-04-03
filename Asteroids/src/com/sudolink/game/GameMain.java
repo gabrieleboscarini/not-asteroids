@@ -81,7 +81,7 @@ public class GameMain implements KeyListener {
         pause = new TextDisplay(fm.getFont("silkscreen", 48), "Press ESC Key");
         pause.setForeground(Color.red);
         pause.setXY(GameCanvas.SCREEN_WIDTH * 0.5f, GameCanvas.SCREEN_HEIGHT * 0.5f);
-        pause.setHorizontallyCentered(true);
+        pause.setIsHorizontallyCentered(true);
         pause.setEnabled(false);
         
         ticker = new TickerTextDisplay(fm.getFont("silkscreen", 18));
@@ -93,7 +93,6 @@ public class GameMain implements KeyListener {
         ticker.addMessage("Version " + GameVersion.getVersion());
         ticker.addMessage("For Your Vintage Gaming Pleasure");
         ticker.addMessage("Built From Scratch in Plain Ol' Java");
-        ticker.addMessage("Sudolink, LLC 2015 * www.matthewmacgregor.net");
         ticker.addMessage("How Do You Like Them Asteroids?");
         
         gameObjects.add(points);
@@ -153,7 +152,6 @@ public class GameMain implements KeyListener {
             public void action() {
                 ship.setXY(GameCanvas.SCREEN_WIDTH * 0.5f, GameCanvas.SCREEN_HEIGHT * 0.5f);
                 ship.setRotation(0);
-                ship.setAcceleration(0);
                 ship.setDirection(0);
                 ship.setSpeed(0);
                 ship.toggleImpervious();

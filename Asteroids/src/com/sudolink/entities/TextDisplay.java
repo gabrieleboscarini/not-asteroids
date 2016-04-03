@@ -49,6 +49,10 @@ public class TextDisplay extends GameObject {
         this( f, "" );
     }
 
+    /**
+     * Collisions are not allowed with TextDisplay objects.
+     * @param o Ignored.
+     */
     @Override
     public void collide(GameObject o) {
         //Does nothing
@@ -65,6 +69,10 @@ public class TextDisplay extends GameObject {
         }
     }
 
+    /**
+     * Sets the text for this display object.
+     * @param message The message to display.
+     */
     public final void setText(String message) {
         this.message = message;
         shouldRedraw = true;
@@ -72,48 +80,51 @@ public class TextDisplay extends GameObject {
     }
 
     /**
-     * @param foreground the foreground to set
+     * Sets the foreground color of the text object.
+     * @param foreground The color to be applied to the text.
      */
     public void setForeground(Color foreground) {
         this.foreground = foreground;
     }
 
     /**
-     * @return the isEnabled
+     * Returns true if the object is currently enabled (updated, drawn) in the
+     * scene.
+     * @return True if the object is enabled.
      */
     public boolean isEnabled() {
         return isEnabled;
     }
 
     /**
-     * @param isEnabled the isEnabled to set
+     * Sets whether the object is currently enabled. If false, the text will
+     * not be drawn or updated.
+     * @param isEnabled 
      */
     public void setEnabled(boolean isEnabled) {
         this.isEnabled = isEnabled;
     }
 
-    /**
-     * @param isHorizontallyCentered the isHorizontallyCentered to set
-     */
-    public void setHorizontallyCentered(boolean isHorizontallyCentered) {
+    public void setIsHorizontallyCentered(boolean isHorizontallyCentered) {
         this.isHorizontallyCentered = isHorizontallyCentered;
     }
+ 
     
-    public boolean isHorizontallyCentered() {
-        return isHorizontallyCentered;
-    }
-
     @Override
     public float getX() {
         if( isHorizontallyCentered ) {
-       
             return super.getX() - (getWidth() / 2);
-           
         }
         return super.getX();
     }
     
     // <editor-fold defaultstate="collapsed" desc="Private & Protected Methods">
+    
+    /**
+     * Determine the dimensions of the text object based on the font used.
+     * @param str The message to be displayed.
+     * @return The dimensions of the text.
+     */
     protected Dimension sizeText(String str) { 
         
         Graphics2D _g2d = getGraphics();
@@ -138,8 +149,10 @@ public class TextDisplay extends GameObject {
         return new Dimension(adv, hgt);
     }
 
+    /**
+     * Resize the text object as needed.
+     */
     private void resize() {
- 
         initBuffer();
                
         Dimension d = sizeText(message);
@@ -147,14 +160,15 @@ public class TextDisplay extends GameObject {
         //We only want to refresh the buffered image if it's bigger than 
         //the original (IS THIS CORRECT?) 
         if (d.width > getWidth() || d.height > getHeight()) {
-      
             setWidth(d.width);
             setHeight(d.height);
             refreshBuffer();
-
         }
     }
     
+    /**
+     * Clears the background of the object.
+     */
     private void clearBackground() {
         Graphics2D _g2d = getGraphics();
         _g2d.setBackground(background);
@@ -162,8 +176,8 @@ public class TextDisplay extends GameObject {
     }
 
     /**
-     * Draws to a buffer only when the
-     * @param _g2d text has changed to enhance performance.
+     * Draws to a buffer only when the text has changed to enhance performance.
+     * @param _g2d The Graphics2D object.
      */
     @Override
     protected void drawToBuffer( Graphics2D _g2d ) {
@@ -187,8 +201,8 @@ public class TextDisplay extends GameObject {
     private Color foreground;
     private final Color background;
     private boolean isEnabled = true;
-    private boolean isHorizontallyCentered = false;
+    private boolean isHorizontallyCentered;
     // </editor-fold>
- 
+
 
 }
