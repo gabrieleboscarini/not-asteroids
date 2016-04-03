@@ -63,6 +63,12 @@ public class Ship extends GameObject {
         imperviumTimer.stop();
     }
 
+    /**
+     * We only ever need to draw the ship once, so we'll draw to a buffer and
+     * draw the buffer to the screen.
+     * 
+     * @param g2d Graphics context for the buffer.
+     */
     @Override
     protected void drawToBuffer( Graphics2D g2d ) {
    
@@ -75,13 +81,9 @@ public class Ship extends GameObject {
 
     }
     
-    @Override
-    public void draw(Graphics2D g2d) {
-        
-        super.draw(g2d);
-        
-    }
-
+    /**
+     * Update.
+     */
     @Override
     public void update() {
         super.update();
@@ -96,6 +98,12 @@ public class Ship extends GameObject {
         imperviumTimer.tick();
     }
 
+    /**
+     * The boundaries of this ship object are slightly different than a typical
+     * rectangular object.
+     * 
+     * @return the bounds of this object.
+     */
     @Override
     public Rectangle getBounds() {
         Rectangle rect = new Rectangle(
@@ -107,15 +115,9 @@ public class Ship extends GameObject {
         return rect;
     }
 
-    @Override
-    protected void drawBoundingBox(Graphics2D g2d) {
-        if (GameMain.getInstance().isDebug()) {
-            g2d.setPaint(Color.DARK_GRAY);
-            Rectangle r = getBounds();
-            g2d.drawRect(0, 0, r.width, r.height);
-        }
-    }
-
+    /**
+     * Fires a missile.
+     */
     public void fire() {
         EntityState s = getState();
         if (s == Active || s == Impervious) {
@@ -126,6 +128,10 @@ public class Ship extends GameObject {
         playShootClip();
     }
 
+    /**
+     * The ship can be in an impervious state. The occurs just after the craft
+     * has respawned, for example.
+     */
     public void toggleImpervious() {
         if (getState() == Impervious) {
             setState(Active);
@@ -140,10 +146,18 @@ public class Ship extends GameObject {
         refreshBuffer();
     }
 
+    /**
+     * Checks if the ship is in an impervious state.
+     * @return true if the ship is impervious.
+     */
     public boolean isImpervious() {
         return getState() == EntityState.Impervious;
     }
 
+    /**
+     * The ship "ghosts" when the game is paused.
+     * @return true if the ship is in ghost mode.
+     */
     public boolean toggleGhost() {
         
         if( getState() == EntityState.Passive ) {
@@ -161,10 +175,18 @@ public class Ship extends GameObject {
         }
     }
     
+    /**
+     * The ship "ghosts" when the game is paused.
+     * @return true if the ship is in ghost mode.
+     */
     public boolean isGhost() {
         return getState() == EntityState.Ghost;
     }
 
+    /**
+     * Handles collisions with other objects.
+     * @param o the object colliding with the ship.
+     */
     @Override
     public void collide(GameObject o) {
         if (getState() == Active && isCollision(o)) {
@@ -178,6 +200,9 @@ public class Ship extends GameObject {
     }
     
     // <editor-fold defaultstate="collapsed" desc="Private Methods">
+    /**
+     * Handles respawning the ship and playing the explosion routines.
+     */
     private void explode() {
         this.setState(Passive);
         playExplosionClip();
@@ -188,10 +213,16 @@ public class Ship extends GameObject {
         GameMain.getInstance().respawn();
     }
     
+    /**
+     * Plays the shoot audio.
+     */
     private void playShootClip() {
         audioManager.playClip("shoot");
     }
     
+    /**
+     * Plays the explosion audio.
+     */
     private void playExplosionClip() {
         audioManager.playClip("shipExplosion");
     }

@@ -68,6 +68,18 @@ public abstract class GameObject {
     }
     
     /**
+     * Draws the collision rectangle for this object. Used for debugging.
+     * @param g2d 
+     */
+    protected void drawBoundingBox(Graphics2D g2d) {
+        if (GameMain.getInstance().isDebug()) {
+            g2d.setPaint(Color.DARK_GRAY);
+            Rectangle r = getBounds();
+            g2d.drawRect(0, 0, r.width, r.height);
+        }
+    }
+    
+    /**
      * @return Returns a rectangle that represents the boundaries of the game object.
      */
     public Rectangle getBounds() {
@@ -468,14 +480,6 @@ public abstract class GameObject {
     
     protected void setBuffer(BufferedImage buffer) {
         backbuffer = buffer;
-    }
-    
-    protected void drawBoundingBox(Graphics2D g2d) {
-        if (GameMain.getInstance().isDebug()) {
-            g2d.setPaint(Color.DARK_GRAY);
-            Rectangle r = getBounds();
-            g2d.drawRect(0, 0, r.width, r.height);
-        }
     }
 
     protected boolean isCollision(GameObject o) {
