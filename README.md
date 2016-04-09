@@ -1,5 +1,7 @@
 # Not Asteroids
 
+<iframe width="854" height="480" src="https://www.youtube.com/embed/AN3p02A6LaM" frameborder="0" allowfullscreen></iframe>
+
 This is a remake inspired by the arcade classic ASTEROIDS. I coded it from 
 scratch in plain ol' Java. I wanted some experience building a game without
 the help of a game engine. I chose Java because it's easy to work with,
@@ -18,5 +20,7 @@ the text of this license.
 Not Asteroids is a Netbeans project. It has no external dependencies. Open the
 project in Netbeans and click Run!
 
-
+The game runs fine on Windows, Mac and Linux (Ubuntu) so long as you're using Oracle's
+JRE. It seems to run under openjdk as well, but the sound doesn't work properly.
+I haven't spent any time trying to debug that and probably won't. 
 

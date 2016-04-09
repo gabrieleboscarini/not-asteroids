@@ -24,9 +24,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
@@ -59,7 +61,9 @@ public class AudioManager {
         try {
             
             AudioInputStream stream = AudioSystem.getAudioInputStream(getClass().getResource(mediaFile));
-            Clip clip = AudioSystem.getClip();
+            AudioFormat format = stream.getFormat();
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
+            Clip clip = (Clip) AudioSystem.getLine(info);
             clip.open(stream);
             clips.put(key, clip);
             
