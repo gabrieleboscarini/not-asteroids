@@ -4,6 +4,8 @@
 	<img src="not-asteroids.gif" alt="Not Asteroids Gif">
 </a>
 
+[Watch a gameplay trailer on Youtube](https://youtu.be/AN3p02A6LaM)
+
 This is a remake inspired by the arcade classic ASTEROIDS. I coded it from 
 scratch in plain ol' Java. I wanted some experience building a game without
 the help of a game engine. I chose Java because it's easy to work with,
