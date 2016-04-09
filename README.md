@@ -1,6 +1,8 @@
 # Not Asteroids
 
-<iframe width="854" height="480" src="https://www.youtube.com/embed/AN3p02A6LaM" frameborder="0" allowfullscreen></iframe>
+<a href="https://youtu.be/AN3p02A6LaM">
+	<img src="not-asteroids.gif" alt="Not Asteroids Gif">
+</a>
 
 This is a remake inspired by the arcade classic ASTEROIDS. I coded it from 
 scratch in plain ol' Java. I wanted some experience building a game without
